@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addation Program</title>
+</head>
+<body>
+
+    <h1>Hello world Addation program</h1>
+    <p > This program accept two numaric inputs and adding them up and provide you with the result</p>
+    <input id="num1" onchange="validate(this)"/> 
+    <span>+</span>
+    <input id="num2"onchange="validate(this)"/>
+    <span>=</span>
+    <input id="Result"\>
+    <button onclick="cal()"> Calculate </button>
+
+    <script type="text/javascript">
+        // funcation to calculate the sum of two numbers
+        function  cal () {
+            var num1 = document.getElementById("num1").value ;
+            var num2 = document.getElementById("num2").value ;
+            num1 = parseInt (num1);
+            num2 = parseInt (num2);
+            var result = num1 + num2 ;
+            document.getElementById("Result").value = result ;
+        }
+        // funcation to vaildate if the input is a number
+        function validate( item) {
+             num = item.value ;
+
+            if (isNaN(num ) ){
+                alert("you must enter a vailad number") ;    
+            }
+            
+        }
+    </script>
+
+</body>
+</html>
