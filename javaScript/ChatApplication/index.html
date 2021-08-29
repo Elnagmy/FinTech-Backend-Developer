@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Application</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/mystyle.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: rgb(78, 137, 247);
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="window1" class="modal modal-signin position-static py-5" tabindex="-1" role="dialog" id="modalSignin"
+      style="display: block; ">
+      <div class=" modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+            <!-- <h5 class="modal-title">Modal title</h5> -->
+            <h2 class="fw-bold mb-0">My Chat application</h2>
+          </div>
+
+          <div class="modal-body p-5 pt-0">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-4" id="loginUserField" placeholder="type your name">
+              <label for="floatingInput">Name </label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-4" id="groupField" placeholder="Chat group">
+              <label for="floatingPassword">Chat group</label>
+            </div>
+            <button id="joinGroup" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="button">join
+              group</button>
+            <hr class="my-4">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="window2" class="container" style="display: none;">
+      <div id="navbar-example2" class="navbar navbar-light bg-light px-3">
+        <a class="navbar-brand" href="#">Group Name <strong id="GroupIDfield">My Group</strong> Online user <strong
+            id="onlineUserField">(5)</strong></a>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <button id="logOutfield" type="button" class="btn btn-warning">log out</button>
+        </ul>
+      </div>
+      <div class="mb-3">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Messages:</h3>
+          </div>
+          <div id="myPane" class="panel-body scrollable-panel">
+          </div>
+        </div>
+      </div>
+      <div id="navbar-example2" class="navbar navbar-light bg-light px-3">
+        <input id="MessageContent" class="form-control">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <button id="sendMessage" type="button" class="btn btn-primary ">send message</button>
+        </ul>
+      </div>
+    </div>
+    <script  src="https://js.pusher.com/7.0.3/pusher.min.js"></script>
+    <script type="module" src="./message.js"></script>
+    <script type="module" src="./script.js"></script>
+ 
+</body>
+
+</html>
