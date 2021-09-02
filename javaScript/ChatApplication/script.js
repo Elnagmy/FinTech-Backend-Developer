@@ -29,12 +29,11 @@ function init() {
       }
     });
   document.querySelector("#logOutfield").addEventListener("click", logOutfun);
-  startTimer();
-
+  startLogOutTimer();
   console.log("[.....Initaliazed Done....]]");
 }
 
-function startTimer() {
+function startLogOutTimer() {
   let numberOfSec = 0;
   const WAIT_TIME = 120;
   const timer = setInterval(function () {
@@ -63,6 +62,12 @@ function logOutfun() {
   document.querySelector("#window1").style.display = "block";
   loginUserArray=[];
   document.querySelector("#myPane").innerHTML="";
+  // to reload all compenent form scratch after loging out
+  let windowLoadAfter = 1 * 1000;
+  setTimeout(function() {
+    location.reload();
+}, windowLoadAfter);
+
 
 }
 
@@ -89,6 +94,7 @@ function joinGroup() {
 function sendMassage() {
   console.log("send a message...");
   let msgContent = document.querySelector("#MessageContent").value;
+  if (msgContent=="") return;
   let mymessage = new Message(
     loginUserObj.id,
     loginUserObj.name,
@@ -207,7 +213,6 @@ function upateLoginUser(recivedData) {
   //if no then push the new user to array
   // send me to pusher
   if(recivedData.name=="LogOut"){
-    debugger;
     let logoutuser =-1;
     loginUserArray.forEach((e) => {
       if (recivedData.id == e.id) {
@@ -225,8 +230,10 @@ function upateLoginUser(recivedData) {
   let onlineUsersList = "";
   document.querySelector("#onlineUser").innerHTML = "";
   loginUserArray.forEach((e) => {
+    let me= (( e.id == loginUserObj.id ) ? "(ME)":"") ; 
+    debugger;
     onlineUsersList =
-      onlineUsersList + `<a href="#" class="list-group-item">${e.name}</a>`;
+      onlineUsersList + `<a href="#" class="list-group-item">${e.name} ${me}</a>`;
   });
   document
     .querySelector("#onlineUser")
