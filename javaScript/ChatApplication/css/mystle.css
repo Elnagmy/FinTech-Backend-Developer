@@ -1,5 +1,9 @@
-.scrollable-panel{
-    height:300px;
-    overflow-y:scroll;
-    width:100%;
-    }
+.scrollable-panel {
+  height: 300px;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.solid-bg {
+  background-color: rgb(255 255 255);
+}
