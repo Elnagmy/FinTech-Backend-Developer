@@ -119,7 +119,7 @@ let cancelTask = function (taskid){
 
 
 document.querySelector("#add").addEventListener("click", addTask);
-/* var name = "Test3";
+var name = "Test3";
 var age = 22;
 const calcFunction = () => {
   console.log(this);
@@ -146,4 +146,4 @@ function thisTest() {
   };
   x();
 }
- */
+ 

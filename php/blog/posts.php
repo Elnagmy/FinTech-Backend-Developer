@@ -1,97 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php 
+require_once ('config.php');
+require_once (ROOT_DIR.'\controllers\PostController.php');
+require_once (ROOT_DIR.'\controllers\CategoryController.php');
+require_once (ROOT_DIR.'\controllers\TagController.php');
+define('NUMBER_OF_CATAGORIES_MAIN_PAGE' , 6);
+define('NUMBER_OF_TAGS_MAIN_PAGE' , 20);
+define('MAX_PAGINATION_PAGES',3);
+define('PAGE_SIZE' , 2);
+$category_id = isset($_REQUEST['category_id']) ? $_REQUEST['category_id'] : null;
+$tag_id = isset($_REQUEST['tag_id']) ? $_REQUEST['tag_id'] : null;
+$q = isset($_REQUEST['posts_search']) ? $_REQUEST['posts_search'] : null;
+$user_id = isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : null;
+$catgory_name = isset($_REQUEST['catgory_name']) ? $_REQUEST['catgory_name'] : null;
+$tag_name = isset($_REQUEST['tag_name']) ? $_REQUEST['tag_name'] : null;
+$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 
-  <head>
+$requestQuery = (($category_id !=null )? "category_id=".$category_id ."&":"")
+                .(($tag_id !=null )? "tag_id=".$tag_id ."&" :"")
+                .(($user_id !=null )? "user_id=".$user_id ."&" :"")
+                .(($q !=null )? "posts_search=".$q."&":"");
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+$page_size = PAGE_SIZE;
+$postControler = new PostController ();
+$posts = $postControler->getPosts($page_size, $page, $category_id, $tag_id, $user_id , $q);
+$postsCount =  $postControler->get_PostsCount();
+$numberOfpages = $postControler->getNumberOfPages($postsCount , $page_size );
+$catCont = new CategoryController ();
+$catgories = $catCont->getcategories(NUMBER_OF_CATAGORIES_MAIN_PAGE , $catgory_name);
+$tagCont = new TagController ();
+$tags = $tagCont->getTags(NUMBER_OF_TAGS_MAIN_PAGE ,$tag_name);
 
-    <title>Sprints blog</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-stand-blog.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
-<!--
-
-TemplateMo 551 Stand Blog
-
-https://templatemo.com/tm-551-stand-blog
-
--->
-  </head>
-
-  <body>
-
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
-
-    <!-- Header -->
-    <header class="">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <a class="navbar-brand" href="index.html"><h2>Sprints Blog<em>.</em></h2></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="index.php">Home
-                </a>
-              </li> 
-              <li class="nav-item active">
-                <a class="nav-link" href="posts.php">Posts</a>
-                <span class="sr-only">(current)</span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.php">Contact Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="login.php">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="logout.php">Logout</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="register.php">Register</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="admin.php">Admin</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="myposts.php">My Posts</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+require_once 'layouts/header.php';
+?>
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
     <div class="heading-page header-text">
-     
     </div>
-    
     <!-- Banner Ends Here -->
-
-  
-
     <section class="blog-posts grid-system">
       <div class="container">
         <div class="row">
@@ -114,180 +60,40 @@ https://templatemo.com/tm-551-stand-blog
               <br>
             </div>
               <div class="row">
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-01.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.php"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a> </li>
-                        <li><a href="#">May 31, 2020</a></li>
-                        <li><a href="#">12 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <?php
+              foreach ($posts as $post) {
+              ?>
+                <div class="col-lg-12">
+                  <?php include(ROOT_DIR . '\Views\posts-view.php') ?>
                 </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-02.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.php"><h4>Suspendisse et metus</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 22, 2020</a></li>
-                        <li><a href="#">26 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-03.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.php"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 18, 2020</a></li>
-                        <li><a href="#">42 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-04.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.php"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 16, 2020</a></li>
-                        <li><a href="#">28 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-05.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.html"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 12, 2020</a></li>
-                        <li><a href="#">16 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-06.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="post-details.html"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 10, 2020</a></li>
-                        <li><a href="#">3 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <?php
+              }
+              ?>
+              
                 <div class="col-lg-12">
                   <ul class="page-numbers">
-                    <li class="active" ><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                     <?php 
+                      if ( $page > 1   ){
+                    ?>
+                      <li><a href=" <?='posts.php?'.$requestQuery.'page='.$page -1 ?>"><i class="fa fa-angle-double-left"></i></a></li>
+                    <?php } ?>
+
+                    <?php 
+                    for ( $i=$page ; $i <= $numberOfpages ; $i++ ){
+                      if ($i==$page + MAX_PAGINATION_PAGES) break;
+                    ?>
+                       <li <?= ( $i == $page) ? "class='active'" : "" ?> ><a href=" <?='posts.php?'.$requestQuery.'page='.$i?>"><?=$i?></a></li>
+                    <?php } ?>
+
+                    <?php 
+                      if ( $page + MAX_PAGINATION_PAGES -1 < $numberOfpages  ){
+                    ?>
+                      <li><a href=" <?='posts.php?'.$requestQuery.'page='.$page+MAX_PAGINATION_PAGES?>"><i class="fa fa-angle-double-right"></i></a></li>
+                    <?php } ?>
+
+                  
+                    
+                    
                   </ul>
                 </div>
               </div>
@@ -305,20 +111,20 @@ https://templatemo.com/tm-551-stand-blog
                   
                     <div class="col-lg-12">
                       <div class="sidebar-item search">
-                        <form id="search_form" name="gs" method="GET" action="#">
-                          <input type="text" name="q" class="searchText" placeholder="type to search for category..." autocomplete="on">
+                        <form id="search_category" name="gs" method="GET" action="#">
+                          <input type="text" name="catgory_name" class="searchText" placeholder="type to search for category..." autocomplete="on">
                         </form>
                       </div>
                       </div>
                       <br>
                     <div class="content">
                       <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
+                      <?php
+                         foreach ($catgories as $catg){
+                        ?>
+                          <li><a href=" <?='posts.php?category_id='.$catg->id?>"> - <?=$catg->name?></a></li>
+                        <?php 
+                         } ?>
                       </ul>
                     </div>
                   </div>
@@ -330,21 +136,21 @@ https://templatemo.com/tm-551-stand-blog
                     </div>
                     <div class="col-lg-12">
                       <div class="sidebar-item search">
-                        <form id="search_form" name="gs" method="GET" action="#">
-                          <input type="text" name="q" class="searchText" placeholder="type to search for Tags..." autocomplete="on">
+                        <form id="search_tags" name="gs" method="GET" action="#">
+                          <input type="text" name="tag_name" class="searchText" placeholder="type to search for Tags..." autocomplete="on">
                         </form>
                       </div>
                       </div>
                       <br>
                     <div class="content">
                       <ul>
-                        <li><a href="#">Lifestyle</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Motivation</a></li>
-                        <li><a href="#">PSD</a></li>
-                        <li><a href="#">Responsive</a></li>
+                      <?php
+                         foreach ($tags as $tag){
+                        ?>
+                          <li><a href=" <?='posts.php?tag_id='.$tag->id?>"> <?=$tag->name?></a></li>
+                        <?php 
+                         }
+                        ?>
                       </ul>
                     </div>
                   </div>
@@ -357,51 +163,6 @@ https://templatemo.com/tm-551-stand-blog
     </section>
 
     
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <ul class="social-icons">
-              <li><a href="#">Facebook</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Behance</a></li>
-              <li><a href="#">Linkedin</a></li>
-              <li><a href="#">Dribbble</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-12">
-            <div class="copyright-text">
-              <p>Copyright 2020 Stand Blog Co.
-                    
-                 | Design: <a rel="nofollow" href="https://templatemo.com" target="_parent">TemplateMo</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Additional Scripts -->
-    <script src="assets/js/custom.js"></script>
-    <script src="assets/js/owl.js"></script>
-    <script src="assets/js/slick.js"></script>
-    <script src="assets/js/isotope.js"></script>
-    <script src="assets/js/accordions.js"></script>
-
-    <script language = "text/Javascript"> 
-      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
-      function clearField(t){                   //declaring the array outside of the
-      if(! cleared[t.id]){                      // function makes it static and global
-          cleared[t.id] = 1;  // you could use true and false, but that's more typing
-          t.value='';         // with more chance of typos
-          t.style.color='#fff';
-          }
-      }
-    </script>
-
-  </body>
-</html>
+    <?php 
+    require_once 'layouts/footer.php';
+    ?>

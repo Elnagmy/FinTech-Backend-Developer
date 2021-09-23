@@ -14,7 +14,9 @@ if (isset($_REQUEST['name'])  ){
   $registrationProcessStarted= true;
   $validator = new Vaildator ();
   $errors= ( $validator -> vaildateRegistration($_REQUEST));
-  
+  if ( count($errors) == 0) {
+    $_REQUEST = $validator -> sentisizeUserInputRegistration($_REQUEST) ;
+  }
 } 
 
 ?>
@@ -29,7 +31,8 @@ if (isset($_REQUEST['name'])  ){
         <?php
           if ( $registrationProcessStarted && count($errors) == 0 ) {
             $newUser = new User (null , $_REQUEST['name'] , $_REQUEST['username'] , $_REQUEST['password'], $_REQUEST['email'] , $_REQUEST['phone']);
-            $usercontroler = new UserControlers();
+            $usercontroler = new UserController();
+            $newUser->pofileImage = $usercontroler->getUploadedImage($_FILES) ; 
             $result = $usercontroler -> addNewUser ( $newUser);
             if (  isset ($result['error'] )){
               $errors = $result ;
@@ -43,7 +46,7 @@ if (isset($_REQUEST['name'])  ){
           echo ' <div class="alert alert-danger" role="alert">' . $error . "</div>" ;
         }
         ?>
-          <form id="Register_form" name="posts_from" method="POST" action="register.php"> 
+          <form id="Register_form" name="posts_from" method="POST" action="register.php"  enctype="multipart/form-data" > 
           <div class="row">
             <label class="col-md-4">Name:</label><input name="name" class="col-md-8 form-control" required />
           </div>
@@ -61,6 +64,9 @@ if (isset($_REQUEST['name'])  ){
           </div>
           <div class="row">
             <label class="col-md-4">Phone:</label> <input name="phone" class="col-md-8 form-control" />
+          </div>
+          <div class="row">
+            <label class="col-md-4">Profile Image:</label> <input  type="file" name="Profile-image" class="col-md-8 " required  />
           </div>
           <button class="btn btn-success btn-block">Register</button>
           </form>
